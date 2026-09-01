@@ -1,0 +1,202 @@
+@import './variables.css';
+@import './typography.css';
+@import './components.css';
+@import './animations.css';
+
+/* Global Reset & Base Setup */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto; /* Handled smoothly by Lenis */
+  font-size: 16px;
+  background-color: var(--bg-primary);
+}
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% 15%, #FAF7F0 0%, #F4F0E8 50%, #ECE7DD 100%);
+  color: var(--text-body);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Base Container & Grid */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-pad);
+  padding-right: var(--container-pad);
+}
+
+.section-wrapper {
+  position: relative;
+  padding-top: var(--section-pad-y);
+  padding-bottom: var(--section-pad-y);
+  overflow: hidden;
+}
+
+/* Subtle Organic Grid Background Pattern */
+.bg-ambient-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(184, 147, 67, 0.08) 0%, rgba(78, 94, 67, 0.04) 45%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Header Navbar Styles */
+.header-wrapper {
+  position: fixed;
+  top: 1.25rem;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--container-pad);
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.header-wrapper.scrolled {
+  top: 0.75rem;
+}
+
+.navbar-container {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1120px;
+  height: 64px;
+  background: rgba(250, 248, 244, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(78, 94, 67, 0.12);
+  border-radius: var(--radius-full);
+  padding: 0.5rem 0.75rem 0.5rem 1.5rem;
+  box-shadow: 0 8px 32px rgba(45, 55, 35, 0.06);
+  transition: all 0.35s ease;
+}
+
+.header-wrapper.scrolled .navbar-container {
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 12px 36px rgba(45, 55, 35, 0.1);
+  border-color: rgba(78, 94, 67, 0.18);
+  height: 58px;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.brand-logo-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+}
+
+.brand-logo-name {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--text-heading);
+}
+
+.brand-logo-sub {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--color-sage);
+}
+
+.nav-links-list {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-link-item a {
+  text-decoration: none;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+  position: relative;
+  padding: 0.35rem 0;
+}
+
+.nav-link-item a:hover {
+  color: var(--text-heading);
+}
+
+.nav-link-item a.active {
+  color: var(--color-primary-dark);
+}
+
+.nav-link-item a.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-gold));
+  border-radius: 2px;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--text-heading);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .nav-links-list {
+    display: none;
+  }
+  .mobile-menu-btn {
+    display: flex;
+  }
+  .nav-actions .btn-primary {
+    display: none;
+  }
+}

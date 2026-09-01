@@ -1,0 +1,97 @@
+/* Typography System */
+
+body {
+  font-family: var(--font-main);
+  color: var(--text-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-main);
+  color: var(--text-heading);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.kicker {
+  display: inline-block;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 0.75rem;
+}
+
+.kicker-sage {
+  color: var(--color-sage);
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  color: var(--text-heading);
+  margin: 0 0 1.5rem 0;
+}
+
+.hero-title .highlight-digital {
+  display: block;
+  color: var(--color-primary);
+  background: linear-gradient(135deg, #44563B 0%, #637754 50%, #B89343 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 4px 20px rgba(184, 147, 67, 0.15);
+  font-weight: 900;
+}
+
+.section-title {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--text-heading);
+  margin-bottom: 1rem;
+}
+
+.section-title span.accent {
+  color: var(--color-primary);
+}
+
+.section-subtitle {
+  font-size: clamp(0.95rem, 1.3vw, 1.125rem);
+  color: var(--text-muted);
+  max-width: 580px;
+  line-height: 1.65;
+}
+
+.watermark-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-heading);
+  font-size: clamp(4rem, 14vw, 11rem);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: rgba(78, 94, 67, 0.035);
+  text-transform: uppercase;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 0;
+}
+
+.signature-text {
+  font-family: var(--font-signature);
+  font-size: 2.25rem;
+  color: var(--color-primary-dark);
+  line-height: 1;
+}

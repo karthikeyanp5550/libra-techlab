@@ -1,0 +1,73 @@
+:root {
+  /* Color Palette - Exact Match with Reference */
+  --bg-primary: #F4F1EA;
+  --bg-secondary: #EFECE3;
+  --bg-cream-light: #FAF8F4;
+  --bg-card: #FFFFFF;
+  --bg-card-glass: rgba(255, 255, 255, 0.85);
+  --bg-banner: #EAE6DC;
+  
+  /* Primary Sage / Olive */
+  --color-primary: #4E5E43;
+  --color-primary-dark: #3A4732;
+  --color-primary-darker: #263020;
+  --color-primary-light: #6E8062;
+  
+  /* Secondary Sage / Khaki */
+  --color-sage: #75876A;
+  --color-sage-soft: #91A186;
+  --color-khaki-light: #DFE5DB;
+  --color-khaki-border: rgba(78, 94, 67, 0.15);
+  
+  /* Accent Warm Gold */
+  --color-gold: #B89343;
+  --color-gold-light: #D4AF57;
+  --color-gold-soft: #E5CFA0;
+  --color-gold-glow: rgba(184, 147, 67, 0.35);
+  --color-sage-glow: rgba(78, 94, 67, 0.25);
+  
+  /* Text colors */
+  --text-main: #1D231A;
+  --text-heading: #171C14;
+  --text-body: #475240;
+  --text-muted: #6E7B67;
+  --text-light: #8E9B85;
+  --text-on-dark: #FAF8F4;
+  
+  /* Borders */
+  --border-subtle: rgba(78, 94, 67, 0.12);
+  --border-light: rgba(78, 94, 67, 0.18);
+  --border-gold: rgba(184, 147, 67, 0.3);
+  
+  /* Radii */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(35, 45, 30, 0.04);
+  --shadow-md: 0 8px 24px rgba(35, 45, 30, 0.06);
+  --shadow-lg: 0 16px 36px rgba(35, 45, 30, 0.08);
+  --shadow-hover: 0 20px 48px rgba(35, 45, 30, 0.12);
+  --shadow-glow: 0 0 35px var(--color-gold-glow);
+  --shadow-sage-glow: 0 0 30px var(--color-sage-glow);
+  
+  /* Typography */
+  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Syne', 'Plus Jakarta Sans', sans-serif;
+  --font-signature: 'Caveat', cursive;
+  
+  /* Layout */
+  --container-max: 1240px;
+  --container-pad: clamp(1.25rem, 4vw, 3rem);
+  --section-pad-y: clamp(4.5rem, 8vw, 8.5rem);
+  --header-height: 80px;
+  
+  /* Transitions */
+  --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}

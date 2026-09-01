@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <rect width="48" height="48" rx="12" fill="#F4F0E8"/>
+  <!-- L Geometric mark: vertical bar in sage green, horizontal bar in gold -->
+  <path d="M14 12V34C14 35.1 14.9 36 16 36H34" stroke="#48583E" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="14" cy="14" r="3" fill="#B89343"/>
+  <circle cx="34" cy="36" r="3" fill="#B89343"/>
+</svg>
