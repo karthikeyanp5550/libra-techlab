@@ -245,6 +245,19 @@ export const ServicesSection: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .services-section {
+            padding-top: 2rem !important;
+            padding-bottom: 3.5rem !important;
+          }
+          .services-header-anim {
+            margin-bottom: 2rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 };
+

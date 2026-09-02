@@ -780,7 +780,7 @@ export const SecuritySection: React.FC = () => {
         <div style={{ maxWidth: '960px', margin: '0 auto clamp(3.5rem, 6vw, 5.5rem) auto' }}>
           <div
             ref={compCardRef}
-            className="card-premium"
+            className="card-premium comp-card"
             style={{
               background: '#FAF8F4',
               border: '1.5px solid rgba(184, 147, 67, 0.35)',
@@ -930,6 +930,7 @@ export const SecuritySection: React.FC = () => {
         ========================================================================= */}
         <div style={{ maxWidth: '820px', margin: '0 auto' }}>
           <div
+            className="maint-support-card"
             style={{
               background: '#FFFFFF',
               border: '1px solid rgba(78, 94, 67, 0.14)',
@@ -968,7 +969,7 @@ export const SecuritySection: React.FC = () => {
 
             <button
               onClick={scrollToContact}
-              className="btn btn-primary"
+              className="btn btn-primary maint-support-btn"
               style={{ padding: '0.9rem 2.2rem' }}
             >
               <span>GET MAINTENANCE SUPPORT</span>
@@ -996,6 +997,28 @@ export const SecuritySection: React.FC = () => {
           }
           .sec-maint-grid {
             grid-template-columns: 1fr !important;
+          }
+          .card-premium.comp-card {
+            padding: 1.5rem 1.15rem !important;
+            border-radius: 20px !important;
+          }
+          .maint-support-card {
+            padding: 1.75rem 1.15rem !important;
+            border-radius: 20px !important;
+          }
+          .maint-support-btn {
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 0.85rem 1rem !important;
+            font-size: 0.875rem !important;
+            letter-spacing: 0.05em !important;
+            white-space: normal !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 0.5rem !important;
+            box-sizing: border-box !important;
+            border-radius: 9999px !important;
           }
         }
       `}</style>

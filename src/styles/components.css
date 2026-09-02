@@ -471,3 +471,11 @@ textarea.form-control {
   resize: vertical;
   min-height: 110px;
 }
+
+@media (max-width: 580px) {
+  .btn {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
+

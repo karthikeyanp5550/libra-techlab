@@ -161,9 +161,15 @@ export const HeroSection: React.FC = () => {
 
       <style>{`
         @media (max-width: 992px) {
+          .hero-section {
+            min-height: auto !important;
+            padding-top: clamp(5.75rem, 9vh, 7rem) !important;
+            padding-bottom: 2rem !important;
+          }
           .hero-grid {
             grid-template-columns: 1fr !important;
             text-align: center;
+            gap: 1.5rem !important;
           }
           .hero-text-content {
             display: flex;
@@ -174,11 +180,28 @@ export const HeroSection: React.FC = () => {
             justify-content: center;
           }
           .hero-visual-wrapper {
-            height: 420px !important;
-            margin-top: 1rem;
+            height: 440px !important;
+            margin-top: 0.75rem;
+          }
+        }
+        @media (max-width: 580px) {
+          .hero-section {
+            padding-top: 5.25rem !important;
+            padding-bottom: 1.25rem !important;
+          }
+          .hero-title {
+            margin-bottom: 1rem !important;
+          }
+          .hero-text-content p {
+            margin-bottom: 1.25rem !important;
+          }
+          .hero-visual-wrapper {
+            height: 350px !important;
+            margin-top: 0.5rem !important;
           }
         }
       `}</style>
     </section>
   );
 };
+

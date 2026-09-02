@@ -39,25 +39,32 @@ export function ThreeCubeCanvas(): React.JSX.Element {
     // 1. Scene & Camera Setup
     const scene = new THREE.Scene();
 
-    const width = container.clientWidth || 560;
-    const height = container.clientHeight || 560;
+    const width = container.clientWidth || 360;
+    const height = container.clientHeight || 360;
 
-    // Camera calibrated so 1.25x cluster is fully visible without clipping
+    // Camera calibrated so cluster is fully visible without clipping
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 1000);
     camera.position.set(0, 0, 7.8);
 
     // 2. High-Performance WebGL Renderer
+    const isMobileDevice = window.innerWidth <= 768;
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true,
       powerPreference: 'high-performance',
     });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobileDevice ? 1.5 : 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.42;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFShadowMap;
+
+    // Ensure canvas element styling
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
+    renderer.domElement.style.display = 'block';
+    renderer.domElement.style.touchAction = 'pan-y';
     container.appendChild(renderer.domElement);
 
     // 3. Cinematic Studio Lighting
@@ -68,8 +75,8 @@ export function ThreeCubeCanvas(): React.JSX.Element {
     const keyLight = new THREE.DirectionalLight(0xFFF4DE, 3.6);
     keyLight.position.set(5.5, 7.5, 5.5);
     keyLight.castShadow = true;
-    keyLight.shadow.mapSize.width = 1024;
-    keyLight.shadow.mapSize.height = 1024;
+    keyLight.shadow.mapSize.width = isMobileDevice ? 512 : 1024;
+    keyLight.shadow.mapSize.height = isMobileDevice ? 512 : 1024;
     keyLight.shadow.bias = -0.0008;
     scene.add(keyLight);
 
@@ -93,24 +100,30 @@ export function ThreeCubeCanvas(): React.JSX.Element {
     scene.add(clusterMasterGroup);
     clusterMasterGroup.position.set(0, 0, 0);
 
-    // Responsive Display Scaling: Desktop 1.25x, Mobile 1.15x
-    const isMobile = window.innerWidth <= 768;
-    const currentScale = isMobile ? 1.15 : 1.25;
-    clusterMasterGroup.scale.set(currentScale, currentScale, currentScale);
+    // Responsive Display Scaling: Desktop 1.25x, Tablet 1.08x, Mobile 0.92x
+    const getResponsiveScale = () => {
+      const w = window.innerWidth;
+      if (w <= 480) return 0.92;
+      if (w <= 768) return 0.98;
+      if (w <= 992) return 1.08;
+      return 1.25;
+    };
+
+    const initialScale = getResponsiveScale();
+    clusterMasterGroup.scale.set(initialScale, initialScale, initialScale);
 
     // 3/4 Isometric Perspective Tilt
     clusterMasterGroup.rotation.y = -0.28;
     clusterMasterGroup.rotation.x = 0.14;
 
-    // Counts per material category
-    const countOlive = isMobile ? 80 : 140;
-    const countIvory = isMobile ? 70 : 130;
-    const countSage = isMobile ? 30 : 50;
-    const countGold = isMobile ? 25 : 45;
-    const countGlass = isMobile ? 20 : 35;
+    // Counts per material category (mobile reduced ~40-45% for performance)
+    const countOlive = isMobileDevice ? 75 : 140;
+    const countIvory = isMobileDevice ? 70 : 130;
+    const countSage = isMobileDevice ? 28 : 50;
+    const countGold = isMobileDevice ? 24 : 45;
+    const countGlass = isMobileDevice ? 20 : 35;
 
     // Materials Palette matching reference image
-    // 1. Deep Olive / Forest Green
     const deepOliveMat = new THREE.MeshStandardMaterial({
       color: 0x36442E,
       roughness: 0.28,
@@ -118,7 +131,6 @@ export function ThreeCubeCanvas(): React.JSX.Element {
       shadowSide: THREE.FrontSide,
     });
 
-    // 2. Warm Ivory / Porcelain
     const ivoryMat = new THREE.MeshStandardMaterial({
       color: 0xFDFBF7,
       roughness: 0.36,
@@ -126,7 +138,6 @@ export function ThreeCubeCanvas(): React.JSX.Element {
       shadowSide: THREE.FrontSide,
     });
 
-    // 3. Muted Sage Green
     const sageMat = new THREE.MeshStandardMaterial({
       color: 0x6E8260,
       roughness: 0.32,
@@ -134,7 +145,6 @@ export function ThreeCubeCanvas(): React.JSX.Element {
       shadowSide: THREE.FrontSide,
     });
 
-    // 4. Luxury Polished Gold
     const goldMat = new THREE.MeshStandardMaterial({
       color: 0xC8A35F,
       roughness: 0.2,
@@ -142,7 +152,6 @@ export function ThreeCubeCanvas(): React.JSX.Element {
       shadowSide: THREE.FrontSide,
     });
 
-    // 5. Translucent Frosted Glass
     const glassMat = new THREE.MeshPhysicalMaterial({
       color: 0x8FA584,
       roughness: 0.16,
@@ -325,7 +334,7 @@ export function ThreeCubeCanvas(): React.JSX.Element {
     const glowTexture = createGlowTexture();
 
     // 6. Floating Drifting Gold Sparks
-    const particleCount = isMobile ? 60 : 110;
+    const particleCount = isMobileDevice ? 40 : 110;
     const particleGeo = new THREE.BufferGeometry();
     const particlePos = new Float32Array(particleCount * 3);
 
@@ -348,7 +357,7 @@ export function ThreeCubeCanvas(): React.JSX.Element {
     const particleMesh = new THREE.Points(particleGeo, particleMat);
     scene.add(particleMesh);
 
-    // 7. Interactive Mouse Parallax & Assembly Animation
+    // 7. Interactive Touch Parallax & Mouse Assembly Animation
     let targetRotationX = 0.14;
     let targetRotationY = -0.28;
     let currentRotationX = 0.14;
@@ -359,11 +368,17 @@ export function ThreeCubeCanvas(): React.JSX.Element {
     let currentTiltX = 0;
     let currentTiltY = 0;
 
+    let isPointerDown = false;
+    let startPointerX = 0;
+    let startPointerY = 0;
+
     let assemblyProgress = 0;
 
+    // Desktop Mouse Parallax
     const handleMouseMove = (e: MouseEvent) => {
-      if (prefersReducedMotion) return;
+      if (prefersReducedMotion || isPointerDown) return;
       const rect = container.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
       const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
 
@@ -374,30 +389,83 @@ export function ThreeCubeCanvas(): React.JSX.Element {
       targetTiltY = y * 0.07;
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+
+    // Mobile / Touch Pointer Events
+    const handlePointerDown = (e: PointerEvent) => {
+      if (prefersReducedMotion) return;
+      isPointerDown = true;
+      startPointerX = e.clientX;
+      startPointerY = e.clientY;
+    };
+
+    const handlePointerMove = (e: PointerEvent) => {
+      if (prefersReducedMotion || !isPointerDown) return;
+      const rect = container.getBoundingClientRect();
+      const currentWidth = rect.width || 360;
+      const currentHeight = rect.height || 360;
+
+      const deltaX = e.clientX - startPointerX;
+      const deltaY = e.clientY - startPointerY;
+
+      // Subtle horizontal rotation
+      const touchRotY = (deltaX / currentWidth) * 0.65;
+      // Very small vertical tilt
+      const touchTiltX = -(deltaY / currentHeight) * 0.12;
+
+      targetRotationY = -0.28 + touchRotY;
+      targetRotationX = 0.14 + touchTiltX;
+      targetTiltX = (deltaX / currentWidth) * 0.15;
+    };
+
+    const handlePointerUp = () => {
+      if (!isPointerDown) return;
+      isPointerDown = false;
+      // Smoothly settle back toward normal resting angles
+      targetRotationY = -0.28;
+      targetRotationX = 0.14;
+      targetTiltX = 0;
+      targetTiltY = 0;
+    };
+
+    const canvasDom = renderer.domElement;
+    canvasDom.addEventListener('pointerdown', handlePointerDown, { passive: true });
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    window.addEventListener('pointerup', handlePointerUp, { passive: true });
+    window.addEventListener('pointercancel', handlePointerUp, { passive: true });
+    canvasDom.addEventListener('pointerleave', handlePointerUp, { passive: true });
 
     // Resize Handler with responsive cluster scaling
     const handleResize = () => {
-      if (!container) return;
-      const newWidth = container.clientWidth;
-      const newHeight = container.clientHeight;
+      if (!container || !renderer || !camera) return;
+      const newWidth = container.clientWidth || 360;
+      const newHeight = container.clientHeight || 360;
       camera.aspect = newWidth / newHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(newWidth, newHeight);
 
       const isMob = window.innerWidth <= 768;
-      const scale = isMob ? 1.15 : 1.25;
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMob ? 1.5 : 2));
+
+      const scale = getResponsiveScale();
       clusterMasterGroup.scale.set(scale, scale, scale);
     };
 
     window.addEventListener('resize', handleResize);
 
-    // 8. Render Loop
-    let animationFrameId: number;
+    // 8. Render Loop & Visibility Management
+    let animationFrameId: number = 0;
     let lastTime = performance.now();
     let elapsedTime = 0;
+    let isTabVisible = document.visibilityState !== 'hidden';
+    let isIntersecting = true;
 
     const animate = (now: number) => {
+      if (!isTabVisible || !isIntersecting) {
+        animationFrameId = 0;
+        return;
+      }
+
       const delta = Math.min((now - lastTime) / 1000, 0.1);
       lastTime = now;
       elapsedTime += delta;
@@ -408,14 +476,14 @@ export function ThreeCubeCanvas(): React.JSX.Element {
         if (assemblyProgress > 1) assemblyProgress = 1;
       }
 
-      // Smooth LERP mouse parallax
+      // Smooth LERP parallax & damping
       currentRotationX += (targetRotationX - currentRotationX) * 0.045;
       currentRotationY += (targetRotationY - currentRotationY) * 0.045;
       currentTiltX += (targetTiltX - currentTiltX) * 0.04;
       currentTiltY += (targetTiltY - currentTiltY) * 0.04;
 
       if (!prefersReducedMotion) {
-        // Slow organic rotation
+        // Slow organic idle rotation
         clusterMasterGroup.rotation.y = currentRotationY + elapsedTime * 0.055;
         clusterMasterGroup.rotation.x = currentRotationX + Math.sin(elapsedTime * 0.4) * 0.02;
         clusterMasterGroup.rotation.z = currentTiltX * 0.18;
@@ -467,13 +535,48 @@ export function ThreeCubeCanvas(): React.JSX.Element {
       animationFrameId = requestAnimationFrame(animate);
     };
 
+    const handleVisibilityChange = () => {
+      isTabVisible = document.visibilityState !== 'hidden';
+      if (isTabVisible && isIntersecting && !animationFrameId) {
+        lastTime = performance.now();
+        animationFrameId = requestAnimationFrame(animate);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isIntersecting = entry.isIntersecting;
+          if (isTabVisible && isIntersecting && !animationFrameId) {
+            lastTime = performance.now();
+            animationFrameId = requestAnimationFrame(animate);
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(container);
+
     animationFrameId = requestAnimationFrame(animate);
 
     // 9. Cleanup & Disposal
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      canvasDom.removeEventListener('pointerdown', handlePointerDown);
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', handlePointerUp);
+      window.removeEventListener('pointercancel', handlePointerUp);
+      canvasDom.removeEventListener('pointerleave', handlePointerUp);
       window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(animationFrameId);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      observer.disconnect();
+
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
 
       if (renderer.domElement && container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
@@ -501,9 +604,9 @@ export function ThreeCubeCanvas(): React.JSX.Element {
       style={{
         width: '100%',
         height: '100%',
-        minHeight: '520px',
         position: 'relative',
         cursor: 'grab',
+        touchAction: 'pan-y',
       }}
       aria-label="Interactive 3D Abstract Cube Cluster Visual"
     />
@@ -511,3 +614,4 @@ export function ThreeCubeCanvas(): React.JSX.Element {
 }
 
 export default ThreeCubeCanvas;
+

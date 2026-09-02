@@ -39,7 +39,13 @@ body {
   padding-top: var(--section-pad-y);
   padding-bottom: var(--section-pad-y);
   overflow: hidden;
+  scroll-margin-top: 80px;
 }
+
+section {
+  scroll-margin-top: 80px;
+}
+
 
 /* Subtle Organic Grid Background Pattern */
 .bg-ambient-glow {
@@ -200,3 +206,18 @@ body {
     display: none;
   }
 }
+
+@media (max-width: 768px) {
+  .header-wrapper {
+    top: 0.75rem;
+    padding: 0 0.85rem;
+  }
+  .navbar-container {
+    height: 56px;
+    padding: 0.35rem 0.5rem 0.35rem 1rem;
+  }
+  .brand-logo-name {
+    font-size: 0.975rem;
+  }
+}
+
